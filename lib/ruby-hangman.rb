@@ -1,10 +1,13 @@
+require 'yaml'
 
 class Hangman
+
+attr_accessor   :word, :word_array, :guess_progress, :guess_record, :curr_guess, :wrong_tally, :game_status, :the_hangman
 
   def initialize
     @file
     @words
-    @word
+    @word 
     @word_array = Array.new
     @guess_progress
     @guess_record = Array.new
@@ -36,11 +39,16 @@ class Hangman
   end
 
   def player_guess  #asks the player to guess a letter (only accepts a single letter)
-    p "Choose a letter:"
+    p "Choose a letter (or save game by entering 'save'):"
     @curr_guess = gets.chomp
-    while @curr_guess.length > 1 do
-      p "Choose a SINGLE letter:"
-      @curr_guess = gets.chomp
+    if @curr_guess == 'save'
+        save_game
+        p 'game saved'
+    else
+      while @curr_guess.length > 1 do
+        p "Choose a SINGLE letter:"
+        @curr_guess = gets.chomp
+      end
     end
   end
 
@@ -60,7 +68,6 @@ class Hangman
     end
   end
       
-  
   def update_game_status  #update our game status to either Win, Lose, or Play, this tells our loop what to do
     if @wrong_tally >= 7
         @game_status = "Lose"
@@ -71,7 +78,6 @@ class Hangman
     end
   end
 
-
   def update_display #display our progress based on our game status
     if @game_status == "Play"
       puts @the_hangman[@wrong_tally]
@@ -81,23 +87,75 @@ class Hangman
       puts @the_hangman[@wrong_tally]
       p "*** GAME OVER ***"
       p "The word was: #{@word}"
-    else
+    elsif @game_status == "Win"
       puts @the_hangman[8]
+      p "Secret Word: #{@guess_progress.join("  ")}"
       p "*** You WIN!!! ***"
+    else
+        "Game ended"
     end  
   end
 
-  def play_game
-    choose_word
-    while @game_status == "Play" do
-      player_guess
-      process_guess
-      update_game_status
-      update_display
+  def to_yaml
+    YAML.dump ({
+      :word => @word,
+      :word_array => @word_array,
+      :guess_progress => @guess_progress,
+      :guess_record => @guess_record,
+      :curr_guess => @curr_guess,
+      :wrong_tally => @wrong_tally,
+      :game_status => @game_status,
+    })
+  end
+
+  def from_yaml(file)
+    data = YAML.load File.open(file, 'r')
+    p data
+    @word = data[:word]
+    @word_array = data[:word_array]
+    @guess_progress = data[:guess_progress]
+    @guess_record = data[:guess_record]
+    @curr_guess = data[:curr_guess]
+    @wrong_tally = data[:wrong_tally]
+    @game_status = data[:game_status]
+  end
+
+  def save_game
+    Dir.mkdir('saved') unless Dir.exist?('saved')
+    p "Enter name for saved game:"
+    game = gets.chomp
+    filename = "saved/#{game}.txt"
+    File.open(filename, 'w') do |file|
+        file.puts to_yaml
     end
   end
 
+  def load_game
+    p "Enter name of game you want to load"
+    game = gets.chomp
+    filename = "saved/#{game}.txt"
+    from_yaml(filename)
+  end
 
+  def play_game
+    p "Enter 'New' or 'Load'"
+    game = gets.chomp
+    if game == 'Load'
+        load_game
+    elsif game == 'New'
+        choose_word
+    else
+        p "you didn't enter 'New' or 'Load', you are getting a new game, have fun"
+    end
+        update_display
+        while @game_status == "Play" do
+            player_guess
+            break if @curr_guess == 'save'
+            process_guess
+            update_game_status
+            update_display
+        end
+  end
 
 end
 
