@@ -96,7 +96,7 @@ attr_accessor   :word, :word_array, :guess_progress, :guess_record, :curr_guess,
     end  
   end
 
-  def to_yaml
+  def to_yaml    # converts variables into a YAML string (used for saving games)
     YAML.dump ({
       :word => @word,
       :word_array => @word_array,
@@ -108,7 +108,7 @@ attr_accessor   :word, :word_array, :guess_progress, :guess_record, :curr_guess,
     })
   end
 
-  def from_yaml(file)
+  def from_yaml(file)    #reads YAML strings to load variables from a saved game file
     data = YAML.load File.open(file, 'r')
     p data
     @word = data[:word]
@@ -120,7 +120,7 @@ attr_accessor   :word, :word_array, :guess_progress, :guess_record, :curr_guess,
     @game_status = data[:game_status]
   end
 
-  def save_game
+  def save_game    #method to save games using the yaml method above
     Dir.mkdir('saved') unless Dir.exist?('saved')
     p "Enter name for saved game:"
     game = gets.chomp
@@ -130,14 +130,14 @@ attr_accessor   :word, :word_array, :guess_progress, :guess_record, :curr_guess,
     end
   end
 
-  def load_game
+  def load_game    #method to load saved games using the yaml method above
     p "Enter name of game you want to load"
     game = gets.chomp
     filename = "saved/#{game}.txt"
     from_yaml(filename)
   end
 
-  def play_game
+  def play_game    #loop to play the game, also allows you to save or load games as you play
     p "Enter 'New' or 'Load'"
     game = gets.chomp
     if game == 'Load'
