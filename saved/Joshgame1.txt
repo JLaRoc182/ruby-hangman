@@ -1,0 +1,33 @@
+---
+:word: dialect
+:word_array:
+- d
+- i
+- a
+- l
+- e
+- c
+- t
+:guess_progress:
+- d
+- i
+- a
+- l
+- e
+- _
+- t
+:guess_record:
+- a
+- e
+- i
+- o
+- u
+- s
+- l
+- t
+- m
+- n
+- d
+:curr_guess: save
+:wrong_tally: 5
+:game_status: Play

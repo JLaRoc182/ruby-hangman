@@ -1,0 +1,28 @@
+---
+:word: lingual
+:word_array:
+- l
+- i
+- n
+- g
+- u
+- a
+- l
+:guess_progress:
+- _
+- i
+- _
+- _
+- u
+- a
+- _
+:guess_record:
+- a
+- e
+- i
+- o
+- u
+- s
+:curr_guess: save
+:wrong_tally: 3
+:game_status: Play

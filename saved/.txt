@@ -1,0 +1,35 @@
+---
+:word: splayfeet
+:word_array:
+- s
+- p
+- l
+- a
+- y
+- f
+- e
+- e
+- t
+:guess_progress:
+- s
+- p
+- l
+- a
+- y
+- f
+- e
+- e
+- t
+:guess_record:
+- a
+- e
+- i
+- f
+- t
+- s
+- l
+- p
+- y
+:curr_guess: y
+:wrong_tally: 1
+:game_status: Win
